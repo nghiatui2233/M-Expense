@@ -47,7 +47,6 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         String time = expense.getUsed_Time();
 
         // set value to form
-        holder.expense_id.setText(String.valueOf(id));
         holder.category.setText(category);
         holder.total_expense_txt.setText(String.valueOf(total));
         holder.time.setText(time);
@@ -71,12 +70,11 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
 
     class ExpenseViewHolder extends RecyclerView.ViewHolder {
 
-        TextView expense_id, category, total_expense_txt, time, note;
+        TextView category, total_expense_txt, time;
         LinearLayout mainLayout1;
 
         ExpenseViewHolder(@NonNull View itemView) {
             super(itemView);
-            expense_id = itemView.findViewById(R.id.expense_id);
             category = itemView.findViewById(R.id.category);
             total_expense_txt = itemView.findViewById(R.id.total_expense_txt);
             time = itemView.findViewById(R.id.time);
