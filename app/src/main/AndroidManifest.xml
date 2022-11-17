@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.jovanovic.stefan.sqlitetutorial">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="M-Expense"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".DeleteExpense"
+            android:parentActivityName=".Detail"/>
+
+        <activity android:name=".AddExpense"
+            android:parentActivityName=".Detail"/>
+
+        <activity android:name=".UpdateActivity"
+            android:parentActivityName=".MainActivity"/>
+
+        <activity
+            android:name=".AddActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".Detail"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name="WaitingActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="LoginActivity"
+            android:exported="true" >
+        </activity>
+        <activity
+            android:name="MainActivity"
+            android:exported="true">
+        </activity>
+    </application>
+
+</manifest>
