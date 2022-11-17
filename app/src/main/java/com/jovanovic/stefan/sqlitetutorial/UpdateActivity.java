@@ -142,7 +142,7 @@ public class UpdateActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 MyDatabaseHelper myDB = new MyDatabaseHelper(UpdateActivity.this);
-                long result = myDB.deleteTrip(String.valueOf(selectedTrip.getId()));
+                long result = myDB.deleteTrip(Long.parseLong(String.valueOf(selectedTrip.getId())));
                 if (result == -1) {
                     Toast.makeText(getBaseContext(), "Failed", Toast.LENGTH_SHORT).show();
                 } else {

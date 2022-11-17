@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,7 +21,7 @@ public class Detail extends AppCompatActivity {
     TextView tvTripDt, input_trip_name, date_start_input, date_end_input, place_from, place_to;
     TextView expense_input, no_data;
     ImageView empty_imageview;
-    Button add_button;
+    Button add_button, button_reload;
     Trip selectedTrip;
     List<Expense> expenses;
     RecyclerView rcvExpense;
@@ -43,8 +44,16 @@ public class Detail extends AppCompatActivity {
         empty_imageview = findViewById(R.id.empty_imageview);
         no_data = findViewById(R.id.no_data);
         add_button = findViewById(R.id.btnAddExpenseDt);
+        button_reload = findViewById(R.id.btnLoad);
 
 
+        button_reload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                startActivity(getIntent());
+            }
+        });
 
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +81,13 @@ public class Detail extends AppCompatActivity {
         rcvExpense.setAdapter(expenseAdapter);
         rcvExpense.setLayoutManager(new LinearLayoutManager(Detail.this));
     }
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1){
+            recreate();
+        }
+    }
     private void displayOrNot() {
         expenses = myDB.getListExpenseByTripID(selectedTrip.getId());
         if(expenses.size() == 0){

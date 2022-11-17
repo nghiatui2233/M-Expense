@@ -205,9 +205,14 @@ class MyDatabaseHelper extends SQLiteOpenHelper {
         return db.delete(TABLE_EXPENSE, "expense_id=?", new String[]{row_id_expense});
     }
 
-    public long deleteTrip(String row_id_trip) {
+    public long deleteTrip(long id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_TRIP, "trip_id=?", new String[]{row_id_trip});
+        ArrayList<Expense> expenses = new ArrayList<>();
+        expenses = getListExpenseByTripID((int) id);
+        for (Expense ex:expenses){
+            deleteExpense(String.valueOf(ex.getId()));
+        }
+        return db.delete(TABLE_TRIP, COLUMN_TRIP_ID +" =?", new String[]{String.valueOf(id)});
     }
 
     void deleteAllData(){
