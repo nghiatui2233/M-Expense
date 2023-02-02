@@ -10,12 +10,11 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
 
-public class AddActivity extends AppCompatActivity {
+public class AddTrip extends AppCompatActivity {
 
     EditText input_trip_name, date_start_input, date_end_input, place_from, place_to;
     Button add_button, cancel;
@@ -43,7 +42,7 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(
-                        AddActivity.this, new DatePickerDialog.OnDateSetListener() {
+                        AddTrip.this, new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
@@ -59,7 +58,7 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(
-                        AddActivity.this, new DatePickerDialog.OnDateSetListener() {
+                        AddTrip.this, new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
@@ -74,7 +73,7 @@ public class AddActivity extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent =new Intent(AddActivity.this, MainActivity.class);
+                Intent intent =new Intent(AddTrip.this, MainActivity.class);
                 startActivity(intent);
                 setResult(RESULT_CANCELED);
             }
@@ -82,28 +81,24 @@ public class AddActivity extends AppCompatActivity {
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MyDatabaseHelper myDB = new MyDatabaseHelper(AddActivity.this);
+                if (validateName() && validateDateStart() && validateDateEnd()&&validateTo()&&validateFrom()) {
+                Database myDB = new Database(AddTrip.this);
                 Trip trip = new Trip();
                 trip.setTrip_name(input_trip_name.getText().toString().trim());
                 trip.setDate_start(date_start_input.getText().toString().trim());
                 trip.setDate_end(date_end_input.getText().toString().trim());
                 trip.setPlace_from(place_from.getText().toString().trim());
                 trip.setPlace_to(place_to.getText().toString().trim());
-                long result = myDB.addTrip(trip ,risk);
-                validate();
-                if (result == -1) {
-                    Toast.makeText(getBaseContext(), "Failed", Toast.LENGTH_SHORT).show();
-                } else {
+                myDB.addTrip(trip ,risk);
                     Toast.makeText(getBaseContext(), "Added Successfully!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(AddTrip.this, MainActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getBaseContext(), "Failed", Toast.LENGTH_SHORT).show();
                 }
             }
 
-            private void validate() {
-                if (input_trip_name.getText().length() == 0 || date_end_input.getText().length() == 0 ||
-                        date_start_input.getText().length() == 0 || place_from.getText().length() == 0 || place_to.getText().length() == 0) {
-                    Toast.makeText(getApplicationContext(), "You must enter all the information", Toast.LENGTH_SHORT).show();
-                }
-            }
+
         });
     }
     public void onRadioButtonClicked(View view) {
@@ -119,6 +114,64 @@ public class AddActivity extends AppCompatActivity {
                 if (checked)
                     risk="No";
                 break;
+        }
+    }
+    private boolean validateName() {
+        String val = input_trip_name.getText().toString();
+
+
+        if (val.trim().isEmpty()) {
+            input_trip_name.setError("Field cannot be empty");
+            return false;
+        }
+        else {
+            input_trip_name.setError(null);
+            return true;
+        }
+    }
+    private boolean validateDateStart() {
+        String val1 = date_start_input.getText().toString();
+        if (val1.trim().isEmpty()) {
+            date_start_input.setError("Field cannot be empty");
+            return false;
+        }
+        else {
+            date_start_input.setError(null);
+            return true;
+        }
+
+    }
+    private boolean validateDateEnd() {
+        String val2 = date_end_input.getText().toString();
+        if (val2.trim().isEmpty()) {
+            date_end_input.setError("Field cannot be empty");
+            return false;
+        }
+        else {
+            date_end_input.setError(null);
+            return true;
+        }
+    }
+    private boolean validateFrom() {
+        String val3 = place_from.getText().toString();
+        if (val3.trim().isEmpty()) {
+            place_from.setError("Field cannot be empty");
+            return false;
+        }
+        else {
+            place_from.setError(null);
+            return true;
+        }
+    }
+    private boolean validateTo() {
+        String val4 = place_to.getText().toString();
+        if (val4.trim().isEmpty()) {
+            place_to.setError("Field cannot be empty");
+            return false;
+        }
+        else {
+            place_to.setError(null);
+            return true;
         }
     }
 }

@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jovanovic.stefan.sqlitetutorial">
 
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,20 +12,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DeleteExpense"
-            android:parentActivityName=".Detail"/>
+        <activity android:name=".DetailExpense"
+            android:parentActivityName=".DetailTrip"/>
 
         <activity android:name=".AddExpense"
-            android:parentActivityName=".Detail"/>
+            android:parentActivityName=".DetailTrip"/>
 
-        <activity android:name=".UpdateActivity"
+        <activity android:name=".UpdateTrip"
             android:parentActivityName=".MainActivity"/>
 
         <activity
-            android:name=".AddActivity"
+            android:name=".AddTrip"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".Detail"
+            android:name=".DetailTrip"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name="WaitingActivity"

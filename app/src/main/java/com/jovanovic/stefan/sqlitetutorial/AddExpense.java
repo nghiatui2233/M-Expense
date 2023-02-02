@@ -25,12 +25,12 @@ public class AddExpense extends AppCompatActivity implements AdapterView.OnItemS
     EditText total_expense, input_notes, date_time;
     Button add_button, Btn_cancel;
     String category="None";
-    Trip trip;
+    SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_expense);
-
 
         total_expense = findViewById(R.id.total_expense);
         date_time = findViewById(R.id.date_time);
@@ -49,6 +49,10 @@ public class AddExpense extends AppCompatActivity implements AdapterView.OnItemS
         spinner.setOnItemSelectedListener(this);
         Intent intent=getIntent();
         Integer trip_id  = intent.getIntExtra("id",1);
+        String trip_name = (String) intent.getSerializableExtra("Name");
+
+
+
 
         date_time.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +75,6 @@ public class AddExpense extends AppCompatActivity implements AdapterView.OnItemS
                                 calendar.set(Calendar.HOUR_OF_DAY,hourOfDay);
                                 calendar.set(Calendar.MINUTE,minute);
 
-                                SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm");
                                 date_time.setText(simpleDateFormat.format(calendar.getTime()));
                             }
                         };
@@ -87,24 +90,42 @@ public class AddExpense extends AppCompatActivity implements AdapterView.OnItemS
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MyDatabaseHelper myDB = new MyDatabaseHelper(AddExpense.this);
+                if ( validateTotal() && validateDateTime()) {
+                Database myDB = new Database(AddExpense.this);
                 Expense expense = new Expense();
                 expense.setTotal_expense(Integer.parseInt(total_expense.getText().toString().trim()));
                 expense.setUsed_time(date_time.getText().toString().trim());
                 expense.setNotes(input_notes.getText().toString().trim());
-                long result = myDB.addExpense(expense,category, trip_id);
-                validate();
-                if (result == -1 && category.equals("None")) {
-                    Toast.makeText(getBaseContext(), "Failed", Toast.LENGTH_SHORT).show();
-                } else {
+                myDB.addExpense(expense,category, trip_id,trip_name);
                     Toast.makeText(AddExpense.this, "Added Successfully!", Toast.LENGTH_SHORT).show();
                     setResult(RESULT_CANCELED);
                     AddExpense.this.finish();
+                } else {
+                    Toast.makeText(getBaseContext(), "Failed", Toast.LENGTH_SHORT).show();
                 }
             }
-            private void validate() {
-                if (total_expense.getText().length() == 0 || input_notes.getText().length() == 0 ) {
-                    Toast.makeText(getApplicationContext(), "You must enter all the information", Toast.LENGTH_SHORT).show();
+            private boolean validateTotal() {
+                String val = total_expense.getText().toString();
+
+                if (val.trim().isEmpty() ) {
+                    total_expense.setError("Field cannot be empty");
+                    return false;
+                }
+                else {
+                    total_expense.setError(null);
+                    return true;
+                }
+            }
+            private boolean validateDateTime() {
+                String val1 = date_time.getText().toString();
+
+                if (val1.trim().isEmpty()) {
+                    date_time.setError("Field cannot be empty");
+                    return false;
+                }
+                else {
+                    date_time.setError(null);
+                    return true;
                 }
             }
         });

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/travel"
-    tools:context=".Detail"
+    tools:context=".DetailTrip"
     android:id="@+id/detailLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -36,10 +36,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:hint="@string/app_name"
-            android:gravity="center"
             android:text="Trip ID"
             android:textColor="#263238"
-            android:textSize="14dp" />
+            android:textSize="20dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,7 +50,6 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="2"
-                android:gravity="center"
                 android:text="TripName"
                 android:textSize="30dp"
                 android:textStyle="bold" />
@@ -75,8 +73,8 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:text="Place From"
                 android:gravity="center"
+                android:text="Place From"
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
@@ -105,11 +103,10 @@
 
             <TextView
                 android:id="@+id/dateStartDt"
-                android:layout_width="160dp"
+                android:layout_width="178dp"
                 android:layout_height="40dp"
                 android:ems="10"
                 android:gravity="center"
-                android:inputType="number"
                 android:text="Date Start"
                 android:textSize="20dp"
                 android:textStyle="bold"
@@ -128,7 +125,6 @@
                 android:layout_width="160dp"
                 android:layout_height="40dp"
                 android:ems="10"
-                android:inputType="date"
                 android:text="Date End"
                 android:textSize="20dp"
                 android:gravity="center"
@@ -138,10 +134,9 @@
 
         <TextView
             android:id="@+id/tvTotalEx"
-            android:layout_width="match_parent"
+            android:layout_width="371dp"
             android:layout_height="45dp"
             android:gravity="center"
-            android:inputType="number"
             android:text="Total"
             android:textSize="30dp" />
     </LinearLayout>

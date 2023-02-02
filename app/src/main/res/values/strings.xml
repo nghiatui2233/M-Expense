@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">M-Expense</string>
     <string name="app_search">Search</string>
+    <string name="menu_logOut">Logout</string>
 
     <string-array name="category">
         <item>Hotel Service</item>

@@ -16,4 +16,9 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView">
 
     </item>
+    <item
+        android:title="@string/menu_logOut"
+        android:id="@+id/sub_Logout"
+        android:icon="@drawable/ic_logout_24"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"/>
 </menu>

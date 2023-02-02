@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,9 +37,9 @@ public class MainActivity extends AppCompatActivity {
     TextView no_data;
     SearchView searchView;
 
-    MyDatabaseHelper myDB;
+    Database myDB;
     List<Trip> trips;
-    CustomAdapter customAdapter;
+    TripAdapter tripAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,18 +52,18 @@ public class MainActivity extends AppCompatActivity {
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AddActivity.class);
+                Intent intent = new Intent(MainActivity.this, AddTrip.class);
                 startActivity(intent);
             }
         });
 
-        myDB = new MyDatabaseHelper(MainActivity.this);
+        myDB = new Database(MainActivity.this);
         trips = new ArrayList<>();
 
         displayOrNot();
 
-        customAdapter = new CustomAdapter(MainActivity.this,this, trips);
-        recyclerView.setAdapter(customAdapter);
+        tripAdapter = new TripAdapter(MainActivity.this,this, trips);
+        recyclerView.setAdapter(tripAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
 
 
@@ -98,13 +99,13 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                customAdapter.getFilter().filter(query);
+                tripAdapter.getFilter().filter(query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                customAdapter.getFilter().filter(newText);
+                tripAdapter.getFilter().filter(newText);
                 return false;
             }
         });
@@ -112,14 +113,21 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.delete_all){
-            confirmDialog();
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
+        switch (item.getItemId()) {
+            case R.id.delete_all:
+                confirmDialog();
+                break;
+            case R.id.sub_Logout:
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                finish();
+                break;
+        }
+        return false;
+    }
     void confirmDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Delete All?");
@@ -127,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                MyDatabaseHelper myDB = new MyDatabaseHelper(MainActivity.this);
+                Database myDB = new Database(MainActivity.this);
                 myDB.deleteAllData();
                 //Refresh Activity
                 Intent intent = new Intent(MainActivity.this, MainActivity.class);

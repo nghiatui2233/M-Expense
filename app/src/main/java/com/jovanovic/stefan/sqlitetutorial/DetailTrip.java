@@ -3,7 +3,6 @@ package com.jovanovic.stefan.sqlitetutorial;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,13 +10,14 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Detail extends AppCompatActivity {
+public class DetailTrip extends AppCompatActivity {
     TextView tvTripDt, input_trip_name, date_start_input, date_end_input, place_from, place_to;
     TextView expense_input, no_data;
     ImageView empty_imageview;
@@ -25,7 +25,7 @@ public class Detail extends AppCompatActivity {
     Trip selectedTrip;
     List<Expense> expenses;
     RecyclerView rcvExpense;
-    MyDatabaseHelper myDB;
+    Database myDB;
     ExpenseAdapter expenseAdapter;
 
     @Override
@@ -47,6 +47,7 @@ public class Detail extends AppCompatActivity {
         button_reload = findViewById(R.id.btnLoad);
 
 
+
         button_reload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,15 +59,17 @@ public class Detail extends AppCompatActivity {
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Detail.this, AddExpense.class);
+                Intent intent = new Intent(DetailTrip.this, AddExpense.class);
                 intent.putExtra("id",selectedTrip.getId());
+                intent.putExtra("Name",selectedTrip.getTrip_name());
                 startActivity(intent);
             }
         });
 
-        myDB = new MyDatabaseHelper(Detail.this);
-        Intent intent=getIntent();
+        myDB = new Database(DetailTrip.this);
+        Intent intent =getIntent();
         selectedTrip = (Trip) intent.getSerializableExtra("trip");
+
 
 
         expenses = new ArrayList<>();
@@ -77,9 +80,9 @@ public class Detail extends AppCompatActivity {
 
 
 
-        expenseAdapter = new ExpenseAdapter(Detail.this,this, expenses);
+        expenseAdapter = new ExpenseAdapter(DetailTrip.this,this, expenses);
         rcvExpense.setAdapter(expenseAdapter);
-        rcvExpense.setLayoutManager(new LinearLayoutManager(Detail.this));
+        rcvExpense.setLayoutManager(new LinearLayoutManager(DetailTrip.this));
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -119,5 +122,6 @@ public class Detail extends AppCompatActivity {
             ab.setTitle(selectedTrip.getTrip_name());
         }
     }
+
 
 }

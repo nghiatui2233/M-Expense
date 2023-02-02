@@ -1,7 +1,5 @@
 package com.jovanovic.stefan.sqlitetutorial;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -13,33 +11,29 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> implements Filterable {
+public class TripAdapter extends RecyclerView.Adapter<TripAdapter.MyViewHolder> implements Filterable {
 
     private final Context context;
     private final Activity activity;
     private List<Trip> trips;
     private final List<Trip> tripsNew;
-    CustomAdapter(Activity activity, Context context, List<Trip> trips) {
+    TripAdapter(Activity activity, Context context, List<Trip> trips) {
         this.activity = activity;
         this.context = context;
         this.trips = trips;
         this.tripsNew = trips;
 
     }
-
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -57,18 +51,20 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         String trip_name = trip.getTrip_name();
         String place_to = trip.getPlace_to();
         String risk = trip.getRisk();
+        String date_start = trip.getDate_start();
 
         // set value to form
         holder.trip_id_txt.setText(String.valueOf(id));
         holder.trip_name_txt.setText(trip_name);
         holder.place_to_txt.setText(place_to);
+        holder.date_start_input.setText(date_start);
         holder.risk.setText(risk);
         holder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 //passing parameter values
-                Intent intent = new Intent(context, Detail.class);
+                Intent intent = new Intent(context, DetailTrip.class);
                 intent.putExtra("trip", trip);
                 activity.startActivityForResult(intent, 1);
             }
@@ -76,7 +72,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         holder.mainLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                Intent intent = new Intent(context, UpdateActivity.class);
+                Intent intent = new Intent(context, UpdateTrip.class);
                 intent.putExtra("selectedTrip", trip);
                 activity.startActivityForResult(intent, 1);
                 return false;
@@ -102,14 +98,18 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
                     for (Trip trip : trips) {
                         if (trip.getTrip_name().toLowerCase().contains(strSearch.toLowerCase())) {
                             list.add(trip);
+                        }else if (trip.getPlace_to().toLowerCase().contains(strSearch.toLowerCase())) {
+                            list.add(trip);
+                        }else if (trip.getRisk().toLowerCase().contains(strSearch.toLowerCase())) {
+                            list.add(trip);
+                        }else if (trip.getDate_start().toLowerCase().contains(strSearch.toLowerCase())) {
+                            list.add(trip);
                         }
                     }
-
                     trips = list;
                 }
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = trips;
-
                 return filterResults;
             }
 
@@ -125,7 +125,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView trip_id_txt, trip_name_txt, place_to_txt, risk;
+        TextView trip_id_txt, trip_name_txt, place_to_txt, risk, date_start_input;
         LinearLayout mainLayout;
 
         MyViewHolder(@NonNull View itemView) {
@@ -133,6 +133,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
             trip_id_txt = itemView.findViewById(R.id.trip_id_txt);
             trip_name_txt = itemView.findViewById(R.id.trip_name_txt);
             place_to_txt = itemView.findViewById(R.id.place_to_txt);
+            date_start_input = itemView.findViewById(R.id.date_start_input);
             risk = itemView.findViewById(R.id.risk);
             mainLayout = itemView.findViewById(R.id.mainLayout);
             //Animate Recyclerview

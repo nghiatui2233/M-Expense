@@ -4,69 +4,84 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DeleteExpense"
+    tools:context=".DetailExpense"
     android:background="@drawable/travel"
     android:padding="30dp">
 
+
+    <ImageView
+        android:id="@+id/ivShare"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="300dp"
+        android:layout_marginLeft="300dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/ic_baseline_cloud_download_24"
+        android:gravity="center"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#3fff"
+        android:gravity="center"
         android:orientation="vertical"
         android:padding="10dp"
-        android:background="#3fff"
-        android:gravity="center">
+        tools:layout_editor_absoluteX="60dp"
+        tools:layout_editor_absoluteY="30dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="-40dp"
             android:gravity="center"
             android:text="Detail Expense"
-            android:layout_marginTop="-40dp"
+            android:textColor="@color/white"
             android:textSize="40dp"
-            android:textStyle="bold"
-            android:textColor="@color/white"/>
+            android:textStyle="bold" />
+
 
         <TextView
             android:id="@+id/category_2"
-            android:layout_width="320dp"
+            android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="60dp"
             android:background="@drawable/editext"
             android:ems="10"
             android:hint="Category"
-            android:inputType="textPersonName"
-            android:textSize="20dp"
             android:paddingLeft="14dp"
+            android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/total_expense_2"
-            android:layout_width="320dp"
+            android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/editext"
             android:ems="10"
-            android:hint="Date Start"
-            android:textSize="20dp"
-            android:inputType="date"
+            android:hint="Total Expense"
             android:paddingLeft="14dp"
+            android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/input_trip_name" />
 
         <TextView
             android:id="@+id/notes_2"
-            android:layout_width="320dp"
+            android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="16dp"
-            android:textSize="20dp"
             android:background="@drawable/editext"
             android:ems="10"
-            android:hint="Date End"
-            android:inputType="date"
+            android:hint="Note"
             android:paddingLeft="14dp"
+            android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/input_trip_name" />
@@ -76,9 +91,9 @@
             android:id="@+id/delete_button_2"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:backgroundTint="@color/red"
             android:layout_marginTop="16dp"
             android:background="@drawable/btn"
+            android:backgroundTint="@color/red"
             android:text="Delete"
             android:textAllCaps="false"
             android:textColor="#fff"
@@ -86,6 +101,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/update_button" />
+
         <Button
             android:id="@+id/btnCancel"
             android:layout_width="match_parent"

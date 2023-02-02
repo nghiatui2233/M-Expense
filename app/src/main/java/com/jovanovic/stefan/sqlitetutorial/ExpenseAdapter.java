@@ -56,7 +56,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
             public void onClick(View view) {
 
                 //passing parameter values
-                Intent intent = new Intent(context, DeleteExpense.class);
+                Intent intent = new Intent(context, DetailExpense.class);
                 intent.putExtra("selectedExpense", expense);
                 activity.startActivityForResult(intent, 1);
             }
@@ -76,7 +76,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         ExpenseViewHolder(@NonNull View itemView) {
             super(itemView);
             category = itemView.findViewById(R.id.category);
-            total_expense_txt = itemView.findViewById(R.id.total_expense_txt);
+            total_expense_txt = itemView.findViewById(R.id.total_expense_txt) ;
             time = itemView.findViewById(R.id.time);
             mainLayout1 = itemView.findViewById(R.id.mainLayout1);
             //Animate Recyclerview

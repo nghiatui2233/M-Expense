@@ -9,14 +9,16 @@ public class Expense implements Serializable {
     private String used_time;
     private String notes;
     private int trip_id;
+    private String tripName;
 
-    public Expense(int expense_id, String category, int total_expense, String used_time,String notes, int trip_id) {
+    public Expense(int expense_id, String category, int total_expense, String used_time,String notes, int trip_id, String tripName) {
         this.expense_id = expense_id;
         this.category = category;
         this.total_expense = total_expense;
         this.used_time = used_time;
         this.notes = notes;
         this.trip_id=trip_id;
+        this.tripName= tripName;
     }
     public Expense(){
 
@@ -55,6 +57,14 @@ public class Expense implements Serializable {
         this.notes = notes;
     }
 
+    public String getTripName() {
+        return tripName;
+    }
+
+    public void setTripName(String notes) {
+        this.tripName = tripName;
+    }
+
 
 
 
@@ -80,6 +90,7 @@ public class Expense implements Serializable {
                 ", category='" + category + '\'' +
                 ", total_expense='" + total_expense + '\'' +
                 ", notes=" + notes + '\'' +
+                ", tripName=" + tripName + '\'' +
                 ", trip_id=" + trip_id +
                 '}';
     }

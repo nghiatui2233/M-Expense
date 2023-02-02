@@ -8,24 +8,21 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
 
-public class UpdateActivity extends AppCompatActivity {
+public class UpdateTrip extends AppCompatActivity {
 
     EditText input_trip_name, date_start_input, date_end_input, place_from, place_to;
     Button update_button, delete_button;
     Trip selectedTrip;
     String risk ="Yes";
-    Expense selectedExpense;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,20 +52,20 @@ public class UpdateActivity extends AppCompatActivity {
         update_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MyDatabaseHelper myDB = new MyDatabaseHelper(UpdateActivity.this);
-
-                selectedTrip.setTrip_name(input_trip_name.getText().toString().trim());
-                selectedTrip.setDate_start(date_start_input.getText().toString().trim());
-                selectedTrip.setDate_end(date_end_input.getText().toString().trim());
-                selectedTrip.setPlace_from(place_from.getText().toString().trim());
-                selectedTrip.setPlace_to(place_to.getText().toString().trim());
-                long result = myDB.updateTrip(selectedTrip,risk);
-                if (result == -1) {
-                    Toast.makeText(getBaseContext(), "Failed", Toast.LENGTH_SHORT).show();
+                if (validateName() && validateDateStart() && validateDateEnd()&&validateTo()&&validateFrom()) {
+                    Database myDB = new Database(UpdateTrip.this);
+                    selectedTrip.setTrip_name(input_trip_name.getText().toString().trim());
+                    selectedTrip.setDate_start(date_start_input.getText().toString().trim());
+                    selectedTrip.setDate_end(date_end_input.getText().toString().trim());
+                    selectedTrip.setPlace_from(place_from.getText().toString().trim());
+                    selectedTrip.setPlace_to(place_to.getText().toString().trim());
+                    myDB.updateTrip(selectedTrip ,risk);
+                    Toast.makeText(getBaseContext(), "Update Successfully!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(UpdateTrip.this, MainActivity.class);
+                    startActivity(intent);
                 } else {
-                    Toast.makeText(getBaseContext(), "Edit Successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), "Failed", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
         delete_button.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +82,7 @@ public class UpdateActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(
-                        UpdateActivity.this, new DatePickerDialog.OnDateSetListener() {
+                        UpdateTrip.this, new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
@@ -101,7 +98,7 @@ public class UpdateActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(
-                        UpdateActivity.this, new DatePickerDialog.OnDateSetListener() {
+                        UpdateTrip.this, new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
@@ -141,7 +138,7 @@ public class UpdateActivity extends AppCompatActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                MyDatabaseHelper myDB = new MyDatabaseHelper(UpdateActivity.this);
+                Database myDB = new Database(UpdateTrip.this);
                 long result = myDB.deleteTrip(Long.parseLong(String.valueOf(selectedTrip.getId())));
                 if (result == -1) {
                     Toast.makeText(getBaseContext(), "Failed", Toast.LENGTH_SHORT).show();
@@ -173,6 +170,64 @@ public class UpdateActivity extends AppCompatActivity {
                 if (checked)
                     risk="No";
                 break;
+        }
+    }
+    private boolean validateName() {
+        String val = input_trip_name.getText().toString();
+
+
+        if (val.trim().isEmpty()) {
+            input_trip_name.setError("Field cannot be empty");
+            return false;
+        }
+        else {
+            input_trip_name.setError(null);
+            return true;
+        }
+    }
+    private boolean validateDateStart() {
+        String val1 = date_start_input.getText().toString();
+        if (val1.trim().isEmpty()) {
+            date_start_input.setError("Field cannot be empty");
+            return false;
+        }
+        else {
+            date_start_input.setError(null);
+            return true;
+        }
+
+    }
+    private boolean validateDateEnd() {
+        String val2 = date_end_input.getText().toString();
+        if (val2.trim().isEmpty()) {
+            date_end_input.setError("Field cannot be empty");
+            return false;
+        }
+        else {
+            date_end_input.setError(null);
+            return true;
+        }
+    }
+    private boolean validateFrom() {
+        String val3 = place_from.getText().toString();
+        if (val3.trim().isEmpty()) {
+            place_from.setError("Field cannot be empty");
+            return false;
+        }
+        else {
+            place_from.setError(null);
+            return true;
+        }
+    }
+    private boolean validateTo() {
+        String val4 = place_to.getText().toString();
+        if (val4.trim().isEmpty()) {
+            place_to.setError("Field cannot be empty");
+            return false;
+        }
+        else {
+            place_to.setError(null);
+            return true;
         }
     }
 }

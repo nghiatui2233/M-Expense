@@ -17,7 +17,7 @@ EditText edUserName,edPassword;
 Button btnLogin,btnCancel;
 CheckBox chkRememberPass;
 String strUser,strPass;
-MyDatabaseHelper myDb;
+    Database myDb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +28,7 @@ MyDatabaseHelper myDb;
         btnLogin=findViewById(R.id.btnLogin);
         btnCancel=findViewById(R.id.btnCancel);
         chkRememberPass=findViewById(R.id.chkRememberPass);
-        myDb= new MyDatabaseHelper(this);
+        myDb= new Database(this);
 
         SharedPreferences pref =getSharedPreferences("USER_FILE",MODE_PRIVATE);
         String user =pref.getString("USERNAME","");

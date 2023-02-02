@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-class MyDatabaseHelper extends SQLiteOpenHelper {
+class Database extends SQLiteOpenHelper {
 
     private Context context;
     private static final String DATABASE_NAME = "M-Expense.db";
@@ -39,7 +39,7 @@ class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_EMAIL = "email";
     private static final String COLUMN_PASSWORD = "password";
 
-    MyDatabaseHelper(@Nullable Context context) {
+    Database(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
     }
@@ -64,6 +64,7 @@ class MyDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(query1);
         String query2 = "CREATE TABLE " + TABLE_EXPENSE +
                 " (" + COLUMN_EXPENSE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_TRIP_NAME + " TEXT," +
                 COLUMN_CATEGORY + " TEXT, " +
                 COLUMN_TOTAL_EXPENSE + " INTERGER, " +
                 COLUMN_USED_TIME + " TEXT, " +
@@ -102,7 +103,7 @@ class MyDatabaseHelper extends SQLiteOpenHelper {
         insertId = db.insert(TABLE_TRIP, null, values);
         return insertId;
     }
-    public long addExpense(Expense expense, String category, Integer trip_id){
+    public long addExpense(Expense expense, String category, Integer trip_id, String trip_name){
         long insertId;
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -112,6 +113,7 @@ class MyDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_USED_TIME, expense.getUsed_Time());
         values.put(COLUMN_NOTES, expense.getNotes());
         values.put(COLUMN_TRIP_ID, String.valueOf(trip_id));
+        values.put(COLUMN_TRIP_NAME, trip_name);
         // Inserting Row
         insertId = db.insert(TABLE_EXPENSE, null, values);
         return insertId;
@@ -145,6 +147,8 @@ class MyDatabaseHelper extends SQLiteOpenHelper {
         }
         return list;
     }
+
+
     public  String getTotalExpense(Integer id){
         final String query = "SELECT * FROM " + TABLE_EXPENSE;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -152,13 +156,13 @@ class MyDatabaseHelper extends SQLiteOpenHelper {
         String $ ="$";
         ArrayList<Expense> expenses = new ArrayList<>();
         Cursor cursor = db.query(true, TABLE_EXPENSE,
-                new String[]{COLUMN_EXPENSE_ID,COLUMN_CATEGORY, COLUMN_TOTAL_EXPENSE,COLUMN_USED_TIME,COLUMN_NOTES,COLUMN_TRIP_ID}, COLUMN_TRIP_ID + "=?",
+                new String[]{COLUMN_EXPENSE_ID,COLUMN_CATEGORY, COLUMN_TOTAL_EXPENSE,COLUMN_USED_TIME,COLUMN_NOTES,COLUMN_TRIP_ID,COLUMN_TRIP_NAME}, COLUMN_TRIP_ID + "=?",
                 new String[]{String.valueOf(id) }, null,null,null,null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             Expense expense = new Expense(cursor.getInt(0),cursor.getString(1),cursor.getInt(2),
-                    cursor.getString(3),cursor.getString(4), cursor.getInt(5));
+                    cursor.getString(3),cursor.getString(4), cursor.getInt(5),cursor.getString(6));
             cost +=expense.getTotal_expense();
             cursor.moveToNext();
         }
@@ -171,13 +175,13 @@ class MyDatabaseHelper extends SQLiteOpenHelper {
         ArrayList<Expense> expenses = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(true, TABLE_EXPENSE,
-                new String[]{COLUMN_EXPENSE_ID,COLUMN_CATEGORY, COLUMN_TOTAL_EXPENSE,COLUMN_USED_TIME,COLUMN_NOTES,COLUMN_TRIP_ID}, COLUMN_TRIP_ID + "=?",
+                new String[]{COLUMN_EXPENSE_ID,COLUMN_CATEGORY, COLUMN_TOTAL_EXPENSE,COLUMN_USED_TIME,COLUMN_NOTES,COLUMN_TRIP_ID,COLUMN_TRIP_NAME}, COLUMN_TRIP_ID + "=?",
                 new String[]{String.valueOf(ID) }, null,null,null,null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             Expense expense = new Expense(cursor.getInt(0),cursor.getString(1),cursor.getInt(2),
-                    cursor.getString(3),cursor.getString(4), cursor.getInt(5));
+                    cursor.getString(3),cursor.getString(4), cursor.getInt(5),cursor.getString(6));
             expenses.add(expense);
             cursor.moveToNext();
         }if (expenses == null){
@@ -194,7 +198,7 @@ class MyDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_DATE_END, trip.getDate_end());
         values.put(COLUMN_PLACE_FROM, trip.getPlace_from());
         values.put(COLUMN_PLACE_TO, trip.getPlace_to());
-        values.put(COLUMN_PLACE_TO, risk);
+        values.put(COLUMN_RISK, risk);
 
         return db.update(TABLE_TRIP, values, "trip_id=?", new String[]{String.valueOf(trip.getId())});
     }
@@ -243,6 +247,7 @@ class MyDatabaseHelper extends SQLiteOpenHelper {
         }
         return list;
     }
+
 
 
 }
